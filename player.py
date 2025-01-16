@@ -1,6 +1,6 @@
 import pygame
 from circleshape import CircleShape
-from constants import PLAYER_RADIUS
+from constants import *
 
 class Player(CircleShape):
     #Call the parent class's constructor, also passing in PLAYER_RADIUS
@@ -19,3 +19,15 @@ class Player(CircleShape):
 
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
+
+    def rotate(self, dt):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_a]:  # rotate left (counterclockwise)
+            self.rotation -= PLAYER_TURN_SPEED * dt  # subtract to rotate left
+
+        if keys[pygame.K_d]:  # rotate right (clockwise)
+            self.rotation += PLAYER_TURN_SPEED * dt  # add to rotate right
+    
+    def update(self, dt):
+        self.rotate(dt)  # Handle rotation based on user input

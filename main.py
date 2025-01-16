@@ -18,6 +18,7 @@ def main():
 
     # Create a Clock object to manage FPS
     clock = pygame.time.Clock()
+    dt=0
 
     # Game loop
     running = True
@@ -37,6 +38,8 @@ def main():
 
         # Limit FPS to 60
         dt = clock.tick(60) / 1000  # delta time in seconds
+        #update the player rotation
+        player.update(dt)   
 
     # Quit pygame when the game loop ends
     pygame.quit()
