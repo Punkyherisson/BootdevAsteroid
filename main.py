@@ -13,13 +13,23 @@ def main():
 
     # Set up the screen with the defined width and height
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    pygame.display.set_caption("Asteroid Game")
+
+     # Create a Clock object to manage FPS
+    clock = pygame.time.Clock()
+    dt=0
+    
+    # We create 2 groups 
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
     #Create a Player Instance
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
-    # Create a Clock object to manage FPS
-    clock = pygame.time.Clock()
-    dt=0
-
+    # Add player to the group
+    updatable.add(player)
+    drawable.add(player)
+ 
     # Game loop
     running = True
     while running:
@@ -30,14 +40,19 @@ def main():
 
         # Fill the screen with a solid black color
         screen.fill((0, 0, 0))
-        
-        # Render the Player in the Game Loop
-        player.draw(screen)
+        # Update all updatable entities
+        for entity in updatable:
+            entity.update(dt)
+        # Draw all drawable entities
+        for entity in drawable:
+            entity.draw(screen)
+
         # Refresh the screen (update the display)
         pygame.display.flip()
 
         # Limit FPS to 60
         dt = clock.tick(60) / 1000  # delta time in seconds
+
         #update the player rotation
         player.update(dt)   
 
