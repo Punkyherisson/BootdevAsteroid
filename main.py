@@ -7,6 +7,9 @@ from constants import *
 #Import the Player Class (sprite step)
 from player import Player
 
+from asteroid import Asteroid
+from asteroidfield import AsteroidField
+
 def main():
     # Initialize pygame
     pygame.init()
@@ -22,13 +25,29 @@ def main():
     # We create 2 groups 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
+
+        # Assign containers
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable,)
 
     #Create a Player Instance
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    asteroid_field = AsteroidField()
 
     # Add player to the group
     updatable.add(player)
     drawable.add(player)
+
+    # Create new groups
+    asteroids = pygame.sprite.Group()
+
+    # Assign containers for asteroids and asteroid field
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable,)
+
+    # Create the asteroid field
+    asteroid_field = AsteroidField()
  
     # Game loop
     running = True
@@ -52,9 +71,6 @@ def main():
 
         # Limit FPS to 60
         dt = clock.tick(60) / 1000  # delta time in seconds
-
-        #update the player rotation
-        player.update(dt)   
 
     # Quit pygame when the game loop ends
     pygame.quit()
