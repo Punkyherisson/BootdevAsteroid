@@ -62,6 +62,13 @@ def main():
         # Update all updatable entities
         for entity in updatable:
             entity.update(dt)
+        # Check for collisions between player and asteroids
+        for asteroid in asteroids:
+            if player.collides_with(asteroid):
+                print("Game over!")
+                running = False
+                break  # Exit the loop when collision is detected
+
         # Draw all drawable entities
         for entity in drawable:
             entity.draw(screen)
