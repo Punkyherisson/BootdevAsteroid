@@ -9,6 +9,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         #Create a field called rotation, initialized to 0
         self.rotation = 0
+        self.shoot_timer = 0  # Timer for shooting
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -19,10 +20,12 @@ class Player(CircleShape):
         return [a, b, c]
     
     def shoot(self):
-        # Create a shot at the player's current position
-        forward = pygame.Vector2(0, 1).rotate(self.rotation)  # Direction the player is facing
-        velocity = forward * PLAYER_SHOOT_SPEED  # Scale the direction vector
-        Shot(self.position.x, self.position.y, velocity)
+        if self.shoot_timer <= 0:  # Only allow shooting if timer is 0 or less
+            # Create a shot at the player's current position
+            forward = pygame.Vector2(0, 1).rotate(self.rotation)  # Direction the player is facing
+            velocity = forward * PLAYER_SHOOT_SPEED  # Scale the direction vector
+            Shot(self.position.x, self.position.y, velocity)
+            self.shoot_timer = PLAYER_SHOOT_COOLDOWN  # Reset the timer
 
     def draw(self, screen):
         pygame.draw.polygon(screen, "white", self.triangle(), 2)
@@ -52,4 +55,10 @@ class Player(CircleShape):
         # Handle shooting
         if keys[pygame.K_SPACE]:
             self.shoot()
+
+        # Decrease the shoot timer
+        if self.shoot_timer > 0:
+            self.shoot_timer -= dt
+
+        super().update(dt)
 
